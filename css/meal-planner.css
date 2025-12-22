@@ -368,7 +368,7 @@ h1, h2, h3 {
     border-radius: var(--radius-md);
     padding: 1.5rem;
     margin-top: 1.5rem;
-    display: none;
+    display: flex;
 }
 
 .bmi-result-card.show {
@@ -648,7 +648,7 @@ h1, h2, h3 {
     top: 0; left: 0;
     width: 100%; height: 100%;
     background: rgba(0,0,0,0.5);
-    display: none; /* JS will toggle flex */
+    display: flex; /* JS will toggle flex */
     align-items: center;
     justify-content: center;
     z-index: 1000;

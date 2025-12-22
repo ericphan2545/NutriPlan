@@ -188,34 +188,52 @@ const MealPlanner = {
   },
 
   // ===== CALENDAR RENDERING =====
-  renderCalendar() {
+ renderCalendar() {
     const grid = document.getElementById("daysGrid");
     if (!grid) return;
+
     grid.innerHTML = "";
-    
+
     const today = new Date();
     const weekStart = new Date(today);
-    weekStart.setDate(today.getDate() - today.getDay() + 1 + (this.currentWeek - 1) * 7);
+    weekStart.setDate(
+      today.getDate() - today.getDay() + 1 + (this.currentWeek - 1) * 7
+    );
 
     this.days.forEach((day, index) => {
       const date = new Date(weekStart);
       date.setDate(weekStart.getDate() + index);
+
       const dayCol = document.createElement("div");
       dayCol.className = "day-column";
       dayCol.innerHTML = `
                 <div class="day-header">
                     <div class="day-name">${this.dayNames[day]}</div>
-                    <div class="day-date">${date.getDate()}/${date.getMonth() + 1}</div>
+                    <div class="day-date">${date.getDate()}/${
+        date.getMonth() + 1
+      }</div>
                 </div>
                 <div class="meal-slots">
-                    ${this.meals.map((meal) => `
-                        <div class="meal-slot ${this.mealPlan[`week${this.currentWeek}`]?.[day]?.[meal] ? "has-meal" : ""}" 
+                    ${this.meals
+                      .map(
+                        (meal) => `
+                        <div class="meal-slot ${
+                          this.mealPlan[`week${this.currentWeek}`]?.[day]?.[
+                            meal
+                          ]
+                            ? "has-meal"
+                            : ""
+                        }" 
                              onclick="openFoodModal('${day}', '${meal}')"
                              data-day="${day}" data-meal="${meal}">
-                            <div class="meal-slot-label">${this.mealNames[meal]}</div>
+                            <div class="meal-slot-label">${
+                              this.mealNames[meal]
+                            }</div>
                             ${this.renderMealContent(day, meal)}
                         </div>
-                    `).join("")}
+                    `
+                      )
+                      .join("")}
                 </div>
             `;
       grid.appendChild(dayCol);
@@ -224,6 +242,7 @@ const MealPlanner = {
 
   renderMealContent(day, meal) {
     const mealData = this.mealPlan[`week${this.currentWeek}`]?.[day]?.[meal];
+
     if (mealData) {
       return `
                 <div class="meal-slot-content">
@@ -236,20 +255,40 @@ const MealPlanner = {
                 <button class="remove-meal-btn" onclick="event.stopPropagation(); removeMeal('${day}', '${meal}')">✕</button>
             `;
     }
+
     return `<div class="add-meal-icon">+</div>`;
   },
 
   // ===== FOOD MODAL HANDLING =====
   openFoodModal(day, meal) {
     this.currentSelectedSlot = { day, meal };
-    document.getElementById("modalTitle").textContent = `Chọn món ăn - Bữa ${this.mealNames[meal]} - ${this.dayNames[day]}`;
+    document.getElementById(
+      "modalTitle"
+    ).textContent = `Chọn món ăn - Bữa ${this.mealNames[meal]} - ${this.dayNames[day]}`;
     this.renderFoodGrid("all");
-    document.getElementById("foodModal").classList.add("show");
+
+    // --- SỬA ĐOẠN NÀY ---
+    const modal = document.getElementById("foodModal");
+    if (modal) {
+        modal.style.display = 'flex'; // Bật hiển thị trước
+        setTimeout(() => {
+            modal.classList.add("show"); // Thêm class để chạy animation opacity
+        }, 10);
+    }
   },
 
   closeModal() {
-    document.getElementById("foodModal").classList.remove("show");
-    this.currentSelectedSlot = null;
+    // --- SỬA ĐOẠN NÀY ---
+    const modal = document.getElementById("foodModal");
+    if (modal) {
+        modal.classList.remove("show"); // Tắt animation trước
+        this.currentSelectedSlot = null;
+        
+        // Đợi 300ms cho transition chạy xong rồi mới ẩn hoàn toàn
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 300);
+    }
   },
 
   // ===== FILTER & GRID =====
@@ -275,33 +314,55 @@ const MealPlanner = {
   renderFoodGrid(category) {
     const grid = document.getElementById("foodGrid");
     if (!grid) return;
-    let foods = this.foodDatabase;
-    if (category !== "all") foods = foods.filter((f) => f.category === category);
 
-    grid.innerHTML = foods.map((food) => {
+    let foods = this.foodDatabase;
+
+    // Filter by category
+    if (category !== "all") {
+      foods = foods.filter((f) => f.category === category);
+    }
+
+    grid.innerHTML = foods
+      .map((food) => {
         const usageCount = this.foodUsageCount[food.id] || 0;
-        const isDisabled = usageCount >= 2; 
+        const isDisabled = usageCount >= 2; // Max 2 times per week
         const isUsedPrevWeek = this.previousWeekFoods.includes(food.id);
+
         return `
-            <div class="food-item ${isDisabled ? "disabled" : ""}" 
-                    onclick="${isDisabled ? "" : `selectFood(${food.id})`}">
-                ${usageCount > 0 ? `<span class="usage-badge">${usageCount}</span>` : ""}
-                <div class="food-item-header">
-                    <span class="food-item-emoji">${food.emoji}</span>
-                    <span class="food-item-name">${food.name}</span>
+                <div class="food-item ${isDisabled ? "disabled" : ""}" 
+                     onclick="${isDisabled ? "" : `selectFood(${food.id})`}">
+                    ${
+                      usageCount > 0
+                        ? `<span class="usage-badge">${usageCount}</span>`
+                        : ""
+                    }
+                    <div class="food-item-header">
+                        <span class="food-item-emoji">${food.emoji}</span>
+                        <span class="food-item-name">${food.name}</span>
+                    </div>
+                    <div class="food-item-meta">
+                        <span class="food-item-calories">${
+                          food.calories
+                        } kcal</span>
+                        ${
+                          isUsedPrevWeek
+                            ? '<span style="color:#ff9800">⚠️ Tuần trước</span>'
+                            : ""
+                        }
+                    </div>
+                    <div class="food-item-nutrients">
+                        <span class="nutrient-badge carbs">C: ${
+                          food.carbs
+                        }g</span>
+                        <span class="nutrient-badge protein">P: ${
+                          food.protein
+                        }g</span>
+                        <span class="nutrient-badge fat">F: ${food.fat}g</span>
+                    </div>
                 </div>
-                <div class="food-item-meta">
-                    <span class="food-item-calories">${food.calories} kcal</span>
-                    ${isUsedPrevWeek ? '<span style="color:#ff9800">⚠️ Tuần trước</span>' : ""}
-                </div>
-                <div class="food-item-nutrients">
-                    <span class="nutrient-badge carbs">C: ${food.carbs}g</span>
-                    <span class="nutrient-badge protein">P: ${food.protein}g</span>
-                    <span class="nutrient-badge fat">F: ${food.fat}g</span>
-                </div>
-            </div>
-        `;
-    }).join("");
+            `;
+      })
+      .join("");
   },
 
   // ===== FOOD SELECTION =====
