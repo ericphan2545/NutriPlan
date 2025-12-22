@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /**
  * recipes.js - Quản lý dữ liệu và hiển thị công thức
  */
@@ -6,6 +7,11 @@
 window.RecipeManager = {
     // CƠ SỞ DỮ LIỆU CÔNG THỨC
    recipesDB = {
+=======
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. CƠ SỞ DỮ LIỆU CÔNG THỨC (CẬP NHẬT ĐẦY ĐỦ 52 MÓN)
+    const recipesDB = {
+>>>>>>> 9fb01a2cd61f8d64c56f4a97a5636e4bd78025df
         "Cơm gà Hội An": {
             image: "https://sf-static.upanhlaylink.com/img/image_20251211bb8eaa78a49193e39bf1374969bb2713.jpg",
             ingredients: ["1 bát gạo", "150g ức gà", "Rau thơm, hành", "Nghệ tươi", "Nước mắm, tiêu"],
@@ -266,6 +272,7 @@ window.RecipeManager = {
             ingredients: ["400g thịt heo xay", "Mỡ heo, tỏi", "Bánh tráng, bún", "Rau sống, dưa leo", "Nước chấm đặc biệt"],
             instructions: ["Xay thịt với mỡ, tỏi và gia vị", "Vo viên hoặc xiên que", "Nướng trên than hoa đến vàng", "Cuốn nem với bánh tráng, bún, rau", "Chấm nước mắm pha đặc biệt"]
         }
+<<<<<<< HEAD
     },
 
     // Hàm khởi tạo sự kiện (Dùng cho trang chủ index.html)
@@ -295,6 +302,26 @@ window.RecipeManager = {
             let ingredientsHtml = recipe.ingredients.map(item => `<li>${item}</li>`).join('');
             let instructionsHtml = recipe.instructions.map(step => `<li>${step}</li>`).join('');
 
+=======
+    };
+    
+    // 2. CÁC BIẾN DOM
+    const modal = document.getElementById("recipe-modal");
+    const modalBody = document.getElementById("modal-body-content");
+    const closeBtn = document.querySelector(".close-modal");
+    const viewButtons = document.querySelectorAll(".view-recipe-btn");
+
+    // 3. HÀM HIỂN THỊ MODAL
+    function openModal(foodName) {
+        const recipe = recipesDB[foodName];
+
+        if (recipe) {
+            // Tạo HTML cho nội dung
+            let ingredientsHtml = recipe.ingredients.map(item => `<li>${item}</li>`).join('');
+            let instructionsHtml = recipe.instructions.map(step => `<li>${step}</li>`).join('');
+
+            // Chèn vào Modal
+>>>>>>> 9fb01a2cd61f8d64c56f4a97a5636e4bd78025df
             modalBody.innerHTML = `
                 <div class="recipe-header">
                     <img src="${recipe.image}" alt="${foodName}" class="recipe-image-large">
@@ -312,11 +339,18 @@ window.RecipeManager = {
                 </div>
             `;
             
+<<<<<<< HEAD
             modal.style.display = "block";
+=======
+            // Hiển thị Modal
+            modal.style.display = "block";
+            // Khóa cuộn trang web chính lại
+>>>>>>> 9fb01a2cd61f8d64c56f4a97a5636e4bd78025df
             document.body.style.overflow = "hidden";
         } else {
             alert("Công thức cho món '" + foodName + "' đang được cập nhật!");
         }
+<<<<<<< HEAD
     },
 
     // Xử lý sự kiện đóng modal
@@ -360,4 +394,34 @@ window.RecipeManager = {
 // Tự động chạy init khi trang tải xong
 document.addEventListener('DOMContentLoaded', () => {
     window.RecipeManager.init();
+=======
+    }
+
+    // 4. XỬ LÝ SỰ KIỆN CLICK NÚT "XEM CÔNG THỨC"
+    viewButtons.forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            // Tìm thẻ cha chứa nút bấm (food-card)
+            const card = e.target.closest(".food-card");
+            // Lấy tên món ăn từ thẻ h3
+            const foodName = card.querySelector(".food-name").innerText.trim();
+            
+            openModal(foodName);
+        });
+    });
+
+    // 5. XỬ LÝ ĐÓNG MODAL
+    // Đóng khi ấn nút X
+    closeBtn.addEventListener("click", () => {
+        modal.style.display = "none";
+        document.body.style.overflow = "auto"; // Mở lại cuộn trang
+    });
+
+    // Đóng khi ấn ra vùng đen bên ngoài
+    window.addEventListener("click", (e) => {
+        if (e.target == modal) {
+            modal.style.display = "none";
+            document.body.style.overflow = "auto";
+        }
+    });
+>>>>>>> 9fb01a2cd61f8d64c56f4a97a5636e4bd78025df
 });
