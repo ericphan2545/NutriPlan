@@ -572,7 +572,7 @@ h1, h2, h3 {
     border-radius: var(--radius-sm);
     padding: 0.625rem;
     border: 2px dashed var(--bg-sage);
-    min-height: 70px;
+    min-height: 100px;
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
