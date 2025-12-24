@@ -354,6 +354,14 @@
     filter: brightness(0) invert(1);
 }
 
+.food-favorite.favorited {
+    background: #ff6b6b !important;
+}
+
+.food-favorite.favorited span {
+    filter: brightness(0) invert(1);
+}
+
 .food-content {
     padding: var(--spacing-lg);
     display: flex;

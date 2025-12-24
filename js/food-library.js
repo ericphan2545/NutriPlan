@@ -17,6 +17,17 @@ const FoodLibrary = {
   init() {
     this.cacheElements();
     this.bindEvents();
+    this.updateFavoriteStates(); // Cập nhật trạng thái yêu thích khi trang load
+    
+    // Lắng nghe sự kiện cập nhật favorites từ các trang khác
+    window.addEventListener('favoritesUpdated', () => {
+      this.updateFavoriteStates();
+    });
+    
+    // Lắng nghe storage event (khi có thay đổi từ tab khác)
+    window.addEventListener('storage', () => {
+      this.updateFavoriteStates();
+    });
   },
 
   // Cache các DOM elements
@@ -85,6 +96,23 @@ const FoodLibrary = {
         e.stopPropagation();
         this.toggleFavorite(btn, index + 1); // Food ID is 1-8 based on card position
       });
+    });
+  },
+
+  // Cập nhật trạng thái yêu thích khi trang load
+  updateFavoriteStates() {
+    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    const { favoriteBtns } = this.elements;
+
+    favoriteBtns.forEach((btn, index) => {
+      const foodId = index + 1;
+      if (favorites.includes(foodId)) {
+        btn.classList.add("favorited");
+        btn.style.background = "#ff6b6b";
+      } else {
+        btn.classList.remove("favorited");
+        btn.style.background = "var(--white)";
+      }
     });
   },
 

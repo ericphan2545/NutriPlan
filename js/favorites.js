@@ -128,6 +128,11 @@ const Favorites = {
   init() {
     this.loadFavorites();
     this.renderFavorites();
+    // Thêm event listener cho storage để cập nhật khi có thay đổi từ trang khác
+    window.addEventListener('storage', () => {
+      this.loadFavorites();
+      this.renderFavorites();
+    });
   },
 
   loadFavorites() {
@@ -143,6 +148,8 @@ const Favorites = {
     this.favoriteIds = this.favoriteIds.filter((id) => id !== foodId);
     localStorage.setItem("favorites", JSON.stringify(this.favoriteIds));
     this.renderFavorites();
+    // Dispatch custom event để các trang khác có thể cập nhật
+    window.dispatchEvent(new CustomEvent('favoritesUpdated', { detail: this.favoriteIds }));
   },
 
   renderFavorites() {
@@ -181,7 +188,7 @@ const Favorites = {
                 <div class="image-container">
                     <img src="${imagePath}" alt="${food.name}" class="food-image">
                     <span class="food-category-badge">${food.category}</span>
-                    <div class="food-favorite" onclick="Favorites.removeFavorite(${food.id})">
+                    <div class="food-favorite favorited" data-food-id="${food.id}" style="background: #ff6b6b; cursor: pointer;">
                         <span>❤️</span>
                     </div>
                 </div>
@@ -199,6 +206,26 @@ const Favorites = {
         }
       )
       .join("");
+    
+    // Thêm event listener cho các nút yêu thích sau khi render
+    this.bindFavoriteButtons();
+  },
+
+  // Bind event listeners cho các nút yêu thích
+  bindFavoriteButtons() {
+    const favoriteButtons = document.querySelectorAll('.food-favorite[data-food-id]');
+    favoriteButtons.forEach((btn) => {
+      // Remove existing listeners by cloning
+      const newBtn = btn.cloneNode(true);
+      btn.parentNode.replaceChild(newBtn, btn);
+      
+      // Add click event
+      newBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const foodId = parseInt(newBtn.getAttribute('data-food-id'));
+        this.removeFavorite(foodId);
+      });
+    });
   },
 };
 
