@@ -317,19 +317,34 @@ const MealPlanner = {
     const mealData = this.mealPlan[`week${this.currentWeek}`]?.[day]?.[meal];
 
     if (mealData) {
+      // Lưu ý: mealData.name phải khớp với tên key trong recipesDB
       return `
                 <div class="meal-slot-content">
-                    <span class="meal-emoji">${mealData.emoji}</span>
+                    <span class="meal-emoji">${mealData.emoji || '🥘'}</span>
                     <div>
-                        <div class="meal-name">${mealData.name}</div>
-                        <div class="meal-calories">${mealData.calories} kcal</div>
+                        <div class="meal-name" style="font-weight:600; font-size: 0.9rem;">${mealData.name}</div>
+                        <div class="meal-calories" style="font-size: 0.8rem; color: var(--text-muted);">${mealData.calories} kcal</div>
                     </div>
                 </div>
-                <button class="remove-meal-btn" onclick="event.stopPropagation(); removeMeal('${day}', '${meal}')">✕</button>
+                
+                <div class="meal-actions" style="display: flex; gap: 5px;">
+                    <button class="detail-meal-btn" 
+        type="button" 
+        onclick="event.preventDefault(); event.stopPropagation(); showRecipeDetails('${mealData.name}')"
+        title="Xem công thức"
+        >!
+</button>
+
+                    <button class="remove-meal-btn" 
+                            onclick="event.stopPropagation(); removeMeal('${day}', '${meal}')"
+                            title="Xóa món">
+                        ✕
+                    </button>
+                </div>
             `;
     }
 
-    return `<div class="add-meal-icon">+</div>`;
+    return `<div class="add-meal-icon" style="font-size: 1.5rem; color: var(--text-muted);">+</div>`;
   },
 
   // ===== FOOD MODAL HANDLING =====

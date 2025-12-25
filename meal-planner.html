@@ -219,9 +219,21 @@
         <span class="icon-dark">☀️</span>
     </button>
 
+    <div id="recipe-modal" class="modal-overlay" style="display: none; z-index: 2000;">
+        <div class="modal" style="max-width: 800px; width: 90%; margin: 2rem auto; max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h3 class="modal-title">Chi tiết công thức</h3>
+                <button class="modal-close" onclick="closeRecipeModal()">✕</button>
+            </div>
+            <div class="modal-body" id="modal-body-content">
+                </div>
+        </div>
+    </div>
+
     <script src="js/nav-indicator.js"></script>
     <script type="module" src="js/theme.js"></script>
     <script src="js/food-database.js"></script>
+    <script src="js/recipes.js"></script>
     <script src="js/meal-planner.js"></script>
   </body>
 </html>

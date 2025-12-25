@@ -1,6 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
-  // 1. CƠ SỞ DỮ LIỆU CÔNG THỨC
-  const recipesDB = {
+const recipesDB = {
   "Cơm gà Hội An": {
     image: "https://sf-static.upanhlaylink.com/img/image_20251211bb8eaa78a49193e39bf1374969bb2713.jpg",
     category: "Món mặn",
@@ -471,14 +469,69 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 };
 
+window.showRecipeDetails = function(foodName) {
+    const modal = document.getElementById("recipe-modal");
+    const modalBody = document.getElementById("modal-body-content");
+    const recipe = recipesDB[foodName];
+
+    if (recipe && modal && modalBody) {
+        // ... (Giữ nguyên phần render nội dung HTML cũ) ...
+        let ingredientsHtml = recipe.ingredients.map((item) => `<li>${item}</li>`).join("");
+        let instructionsHtml = recipe.instructions.map((step) => `<li>${step}</li>`).join("");
+        
+        modalBody.innerHTML = `
+            <div class="recipe-header">
+                <img src="${recipe.image}" alt="${foodName}" class="recipe-image-large">
+                <h2 class="recipe-title">${foodName}</h2>
+            </div>
+            <div class="recipe-content">
+                <div class="recipe-section">
+                    <h4>🛒 Nguyên Liệu:</h4>
+                    <ul class="recipe-list">${ingredientsHtml}</ul>
+                </div>
+                <div class="recipe-section">
+                    <h4>👩‍🍳 Cách Làm:</h4>
+                    <ol class="recipe-steps">${instructionsHtml}</ol>
+                </div>
+            </div>
+        `;
+
+        // SỬA ĐỔI: Thêm logic class 'show' để đồng bộ hiệu ứng với các modal khác
+        modal.style.display = "flex"; 
+        setTimeout(() => {
+            modal.classList.add("show");
+        }, 10);
+        
+        document.body.style.overflow = "hidden";
+    } else {
+        alert("Chưa có công thức cho món này: " + foodName);
+    }
+};
+
+// SỬA ĐỔI: Cập nhật hàm đóng để bỏ class 'show'
+window.closeRecipeModal = function() {
+    const modal = document.getElementById("recipe-modal");
+    if (modal) {
+        modal.classList.remove("show"); // Tắt hiệu ứng trước
+        setTimeout(() => {
+            modal.style.display = "none"; // Ẩn sau khi hiệu ứng chạy xong
+            document.body.style.overflow = "auto";
+        }, 300); // Khớp với thời gian transition trong CSS (thường là 0.3s)
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  // 1. CƠ SỞ DỮ LIỆU CÔNG THỨC
+  
+
   // 2. CÁC BIẾN DOM
   // ... (Phần 1: recipesDB giữ nguyên như cũ) ...
 
   // 2. CÁC BIẾN DOM
   const foodGrid = document.getElementById("food-grid");
-  const modal = document.getElementById("recipe-modal");
+ // const modal = document.getElementById("recipe-modal");
   const modalBody = document.getElementById("modal-body-content");
-  const closeBtn = document.querySelector(".close-modal");
+  //const closeBtn = document.querySelector(".close-modal");
   const resultCount = document.querySelector(".result-count"); // Hiển thị số lượng kết quả
 
   // Các biến cho bộ lọc
@@ -487,6 +540,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const filterBtns = document.querySelectorAll(".filter-btn"); // Các nút danh mục
   const difficultySelect = document.getElementById("filter-difficulty"); // Select độ khó
   const timeSelect = document.getElementById("filter-time"); // Select thời gian
+
+  const modal = document.getElementById("recipe-modal");
+    window.addEventListener("click", (e) => {
+        if (e.target == modal) {
+            window.closeRecipeModal();
+        }
+    });
+    
+    // Gán sự kiện cho nút đóng class .close-modal
+    const closeBtn = document.querySelector(".close-modal");
+    if(closeBtn) {
+        closeBtn.addEventListener("click", window.closeRecipeModal);
+    }
 
   // State: Lưu trạng thái lọc hiện tại
   let currentFilters = {
