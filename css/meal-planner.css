@@ -12,6 +12,7 @@
 :root {
     --primary: #1a4d2e;
     --primary-light: #4a7c59;
+    --pale-green: #c8e6c9;
     --primary-dark: #0d2818;
     --accent: #f9a826;
     --accent-light: #ffc857;
@@ -101,7 +102,7 @@ h1, h2, h3 {
 }
 
 .logo span {
-    color: var(--primary-light);
+    color: var(--pale-green);
 }
 
 .nav-right {
