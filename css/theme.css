@@ -13,6 +13,10 @@
     --border-color: var(--pale-green);
     --card-bg: var(--white);
     --input-bg: var(--off-white);
+    --footer-bg: var(--primary-green); /* Màu xanh lá chủ đạo */
+    --footer-text: var(--white);       /* Chữ trắng */
+    --footer-link-hover: var(--pale-green); /* Màu link khi hover */
+    --footer-border: rgba(255, 255, 255, 0.2);
 }
 
 /* Dark Theme */
@@ -34,6 +38,10 @@
     --dark-text: #eaeaea;
     --gray-text: #b0b0b0;
     --shadow: rgba(0, 0, 0, 0.3);
+    --footer-bg: #0d1b15; /* Màu xanh đen rất tối (gần như đen) */
+    --footer-text: #b0b0b0; /* Chữ xám nhạt cho đỡ chói */
+    --footer-link-hover: var(--mint-green); /* Link hover màu xanh bạc hà */
+    --footer-border: rgba(255, 255, 255, 0.05);
 }
 
 /* Dark Theme Body */

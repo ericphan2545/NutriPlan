@@ -351,10 +351,19 @@
 }
 
 .food-favorite:hover {
-    background: #ff6b6b;
+    background: #ff6b6b !important;
     transform: scale(1.1);
 }
 
+
+/* .food-favorite.favorited:hover span {
+    filter: brightness(1) invert(0);
+} */
+
+/* .food-favorite.favorited:hover {
+    background: var(--white) !important;
+    transform: scale(1.1);
+} */
 
 .food-favorite.favorited {
     background: #ff6b6b !important;
@@ -1276,6 +1285,7 @@
     color: var(--text-primary);
 }
 [data-theme="dark"] .section-title-simple {
+    color: var(--mint-green);
     border-bottom-color: var(--border-color);
 }
 
@@ -1522,6 +1532,7 @@
     transform: translateY(20px);
     transition: transform 0.3s ease;
     animation: fadeInUp 0.3s ease forwards;
+    
 }
 
 .modal-header {
@@ -1530,9 +1541,46 @@
 }
 
 /* Hiệu ứng hover cho nút đóng trong header */
+.modal-close {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: transparent; /* Nền trong suốt mặc định */
+    color: var(--text-muted, #666);
+    font-size: 1.2rem;
+    cursor: pointer;
+    
+    /* Flexbox để căn giữa icon X */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* Transition mượt mà cho tất cả thuộc tính */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hiệu ứng khi di chuột vào (Hover) */
 .modal-close:hover {
-    background-color: #ffebee; /* Màu đỏ nhạt */
-    color: #d32f2f;
+    background-color: #ffebee; /* Màu nền đỏ rất nhạt */
+    color: #d32f2f; /* Icon chuyển sang màu đỏ */
+    transform: rotate(90deg); /* Xoay vòng tạo cảm giác vui mắt */
+    box-shadow: 0 2px 8px rgba(211, 47, 47, 0.15); /* Bóng đổ nhẹ */
+}
+
+/* Hiệu ứng khi nhấn chuột (Active) */
+.modal-close:active {
+    transform: rotate(90deg) scale(0.85); /* Thu nhỏ lại tạo cảm giác nhấn thật */
+    background-color: #ffcdd2; /* Màu nền đậm hơn chút */
+}
+
+/* Dark Mode Support */
+[data-theme="dark"] .modal-close {
+    color: #a0a0a0;
+}
+[data-theme="dark"] .modal-close:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ff6b6b;
 }
 
 /* Hiệu ứng hover cho nút tim trong header */
@@ -1555,4 +1603,111 @@
 [data-theme="dark"] .modal-header .food-favorite {
     border-color: var(--border-color);
     color: var(--text-primary);
+}
+/* --- CSS CHO BẢNG DINH DƯỠNG TRONG MODAL --- */
+/* --- CẬP NHẬT CSS ĐỒNG BỘ LAYOUT --- */
+
+/* 1. Khung bao ngoài: Style giống hệt .recipe-section */
+.nutrition-box-under-img {
+    margin-top: 1.5rem;
+    padding: 2.7rem 2.7rem 3.8rem 2.7rem;
+    border-radius: 12px;
+
+    /* QUAN TRỌNG: Dùng biến theme để giống các mục bên phải */
+    background-color: var(--bg-secondary); 
+    color: var(--text-primary);
+    border: 1px solid var(--border-color, transparent);
+}
+
+/* 2. Tiêu đề: Style giống .recipe-section-title-simple */
+.nutrition-title-small {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1.1rem; /* Điều chỉnh lại size cho cân đối */
+    font-weight: 700;
+    color: var(--text-primary); /* Tự động đổi màu theo theme */
+    
+    /* Kẻ gạch chân giống mục Cách làm */
+    border-bottom: 2px solid var(--border-color, #eee);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    text-align: left; /* Căn trái cho thẳng hàng với tiêu đề khác */
+}
+
+/* 3. Lưới hiển thị: Giữ nguyên bố cục ngang */
+.nutrition-grid-small {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    gap: 10px; /* Tăng khoảng cách một chút cho thoáng */
+}
+
+/* 4. Các ô chỉ số con: Tinh chỉnh để nổi bật trên nền mới */
+.nutri-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    
+    /* Nền thẻ con: Trắng (Light) hoặc Tối (Dark) */
+    background: var(--card-bg, #fff); 
+    
+    padding: 8px 5px;
+    border-radius: 8px;
+    
+    /* Bóng đổ nhẹ và viền mờ */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    border: 1px solid var(--border-color, transparent);
+    transition: transform 0.2s ease;
+}
+
+.nutri-item:hover {
+    transform: translateY(-2px); /* Hiệu ứng nổi nhẹ khi di chuột */
+}
+
+/* Style cho số liệu */
+.nutri-val {
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--primary-green); /* Dùng màu xanh chủ đạo */
+}
+/* Dark mode cho số liệu sáng hơn */
+[data-theme="dark"] .nutri-val {
+    color: var(--mint-green);
+}
+
+/* Style cho đơn vị (Kcal, g...) */
+.nutri-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    margin-top: 2px;
+    text-transform: uppercase;
+}
+/* 1. Hiệu ứng cho lớp nền (Overlay) */
+.modal-overlay {
+    opacity: 0;
+    transition: opacity 0.3s ease; /* Mờ dần đều */
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none; /* Mặc định ẩn, JS sẽ đổi thành flex */
+}
+
+/* 2. Hiệu ứng cho Modal (Khung nội dung) */
+.modal {
+    opacity: 0;
+    /* translateY(50px): Khi ẩn, modal sẽ nằm thấp hơn vị trí chuẩn 50px */
+    transform: translateY(50px) scale(0.95); 
+    /* cubic-bezier: Giúp chuyển động mượt mà, tự nhiên hơn */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --- TRẠNG THÁI HIỂN THỊ (KHI CÓ CLASS .SHOW) --- */
+
+.modal-overlay.show {
+    opacity: 1; /* Hiện nền tối */
+}
+
+.modal-overlay.show .modal {
+    opacity: 1;
+    transform: translateY(0) scale(1); /* Trượt lên vị trí chính giữa */
 }

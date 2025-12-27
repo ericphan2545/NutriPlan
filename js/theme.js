@@ -27,6 +27,15 @@ const ThemeManager = {
     localStorage.setItem("theme", newTheme);
   },
 
+  closeRecipeModal() {
+    const modal = document.getElementById("recipe-modal");
+    if (modal) {
+      modal.classList.remove("show");
+      setTimeout(() => (modal.style.display = "none"), 300);
+      console.log("Đang mở món:");
+    }
+  },
+
   // Bind sự kiện cho nút toggle
   bindToggleButton() {
     const toggleBtn = document.querySelector(".theme-toggle");
