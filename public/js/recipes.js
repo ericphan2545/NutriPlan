@@ -582,6 +582,20 @@ const RecipeManager = {
             if (e.key === "Enter") handleSearch();
         });
     },
+    closeModal() {
+        const { modal } = this.elements; // Lấy element modal
+        
+        if (modal) {
+            // Bước 1: Gỡ class 'show' để kích hoạt animation CSS (trượt xuống)
+            modal.classList.remove("show");
+
+            // Bước 2: Đợi 300ms cho hiệu ứng CSS chạy xong
+            setTimeout(() => {
+                modal.style.display = "none"; // Ẩn hoàn toàn khỏi layout
+                document.body.style.overflow = "auto"; // Cho phép cuộn trang web trở lại
+            }, 300); // 300ms phải khớp với transition trong CSS
+        }
+    },
 
     // --- LOGIC HIỂN THỊ MODAL (SỬ DỤNG CLASS THAY VÌ STYLE CỨNG) ---
     showDetails(foodName) {
@@ -596,12 +610,48 @@ const RecipeManager = {
             let ingredientsHtml = recipe.ingredients.map((item) => `<li>${item}</li>`).join("");
             let instructionsHtml = recipe.instructions.map((step) => `<li>${step}</li>`).join("");
             
-            // QUAN TRỌNG: Không dùng style="..." cho layout nữa
+            // --- ĐOẠN CODE MỚI: TÌM DỮ LIỆU DINH DƯỠNG ---
+            let nutritionHtml = '';
+            // Kiểm tra xem biến FOOD_DATABASE có tồn tại không
+            if (typeof FOOD_DATABASE !== 'undefined') {
+                // Tìm món ăn trong DB dinh dưỡng trùng tên với món trong recipe
+                const nutritionData = FOOD_DATABASE.find(f => f.name === foodName);
+                
+                if (nutritionData) {
+                    nutritionHtml = `
+                        <div class="nutrition-box-under-img">
+                            <h4 class="nutrition-title-small">Dinh dưỡng (1 khẩu phần)</h4>
+                            <div class="nutrition-grid-small">
+                                <div class="nutri-item">
+                                    <span class="nutri-val">${nutritionData.calories}</span>
+                                    <span class="nutri-label">Kcal</span>
+                                </div>
+                                <div class="nutri-item">
+                                    <span class="nutri-val">${nutritionData.carbs}g</span>
+                                    <span class="nutri-label">Carbs</span>
+                                </div>
+                                <div class="nutri-item">
+                                    <span class="nutri-val">${nutritionData.protein}g</span>
+                                    <span class="nutri-label">Protein</span>
+                                </div>
+                                <div class="nutri-item">
+                                    <span class="nutri-val">${nutritionData.fat}g</span>
+                                    <span class="nutri-label">Fat</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            // ----------------------------------------------
+
             modalBody.innerHTML = `
                 <div class="recipe-detail-layout">
                     
                     <div class="recipe-column recipe-col-image">
                         <img src="${recipe.image}" alt="${foodName}" class="recipe-detail-image">
+                        
+                        ${nutritionHtml}
                     </div>
                     
                     <div class="recipe-column recipe-col-content">

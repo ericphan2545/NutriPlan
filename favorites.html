@@ -95,13 +95,9 @@
             <h3 class="modal-title" style="font-size: 1.5rem; color: var(--primary-green); margin: 0; font-family: var(--font-heading);">Chi tiết công thức</h3>
             
             <div style="display: flex; align-items: center; gap: 10px;">
-                <div class="food-favorite favorite-btn" style="position: static; width: 36px; height: 36px; box-shadow: none; border: 1px solid #eee; display: flex; align-items: center; justify-content: center; border-radius: 50%; cursor: pointer;">
-                    <span>❤️</span>
-                </div>
+                <div class="food-favorite favorite-btn" style="background: var(--white); position: static; width: 36px; height: 36px; box-shadow: none;"><span>❤️</span></div>
                 
-                <button class="modal-close" onclick="closeRecipeModal()" style="background: transparent; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-muted); width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
-                    ✕
-                </button>
+                <button class="modal-close" onclick="closeRecipeModal()">✕</button>
             </div>
         </div>
 
@@ -113,6 +109,7 @@
     <script src="js/nav-indicator.js"></script>
     <script type="module" src="js/theme.js"></script>
     <script type="module" src="js/favorites.js"></script>
+    <script src="js/food-database.js"></script>
     <script type="module" src="js/recipes.js"></script>
 </body>
 </html>
