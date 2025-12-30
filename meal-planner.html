@@ -47,9 +47,9 @@
         <div class="content-header">
           <h2 class="page-title">🗓️ Thực Đơn Tuần</h2>
           <div class="week-navigation">
-            <button class="btn-settings" onclick="openSettingsModal()" style="margin-left: 1rem; padding: 0.5rem 1rem; border-radius: 20px; background: var(--light-green); border: 1px solid var(--border-color); cursor: pointer; font-weight: 600;">
+            <!-- <button class="btn-settings" onclick="openSettingsModal()" style="margin-left: 1rem; padding: 0.5rem 1rem; border-radius: 20px; background: var(--light-green); border: 1px solid var(--border-color); cursor: pointer; font-weight: 600;">
                 <span>⚙️</span> Chỉnh thông tin cơ thể & BMI
-            </button>
+            </button> -->
             <button class="week-nav-btn" onclick="previousWeek()">◀</button>
             <span class="current-week" id="currentWeek">Tuần 1</span>
             <button class="week-nav-btn" onclick="nextWeek()">▶</button>
@@ -92,16 +92,53 @@
           </div>
         </div>
 
-        <div class="weekly-calendar">
-          <div class="calendar-header">
-            <h3 class="calendar-title">Lịch ăn trong tuần</h3>
-            <button class="auto-generate-btn" onclick="autoGenerateMeals()">
-               Tự động đề xuất
+       <div class="planner-layout">
+    
+    <div id="bmiResult" class="bmi-result-card">
+        <div class="bmi-overview">
+            <h3 class="bmi-card-title">BMI</h3>
+            <div class="bmi-circle">
+                <span id="bmiValue" class="bmi-score">0.0</span>
+                <span class="bmi-unit">BMI</span>
+            </div>
+            <p id="bmiCategory" class="bmi-status-text">--</p>
+            <button class="btn-recalc" onclick="openSettingsModal()">
+                <span>⚙️</span> Cập nhật
             </button>
-          </div>
-          <div class="days-grid" id="daysGrid">
+        </div>
+
+        <div class="bmi-details-grid">
+            <div class="stat-item">
+                <div class="stat-info">
+                    <span class="stat-label">BMR</span>
+                    <span id="bmrValue" class="stat-value">0</span>
+                </div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-info">
+                    <span class="stat-label">TDEE</span>
+                    <span id="tdeeValue" class="stat-value">0</span>
+                </div>
+            </div>
+            <div class="stat-item highlight-item">
+                <div class="stat-info">
+                    <span class="stat-label">Mục tiêu</span>
+                    <span id="targetCalories" class="stat-value-large">0</span>
+                </div>
             </div>
         </div>
+    </div>
+
+    <div class="weekly-calendar">
+         <div class="calendar-header">
+            <h3 class="calendar-title">Lịch ăn trong tuần</h3>
+            <button class="auto-generate-btn" onclick="autoGenerateMeals()">Tự động</button>
+         </div>
+         <div class="days-grid" id="daysGrid">
+             </div>
+    </div>
+
+</div>
       </main>
     </div>
 
@@ -171,48 +208,7 @@
                       <span>✨</span> Tính toán & Lưu
                     </button>
           
-                    <div id="bmiResult" class="bmi-result-card" style="display: none;">
-    
-    <div class="bmi-overview">
-        <h3 class="bmi-card-title">Chỉ Số BMI Của Bạn</h3>
-        <div class="bmi-circle-container">
-            <div class="bmi-circle">
-                <span id="bmiValue" class="bmi-score">0.0</span>
-                <span class="bmi-unit">BMI</span>
-            </div>
-            <p id="bmiCategory" class="bmi-status-text">Đang tính toán...</p>
-        </div>
-    </div>
-
-    <div class="bmi-details-grid">
-        <div class="stat-item">
-            <div class="stat-icon">🔥</div>
-            <div class="stat-info">
-                <span class="stat-label">BMR (Trao đổi chất)</span>
-                <span id="bmrValue" class="stat-value">0</span>
-                <span class="stat-unit">kcal/ngày</span>
-            </div>
-        </div>
-
-        <div class="stat-item">
-            <div class="stat-icon">⚡</div>
-            <div class="stat-info">
-                <span class="stat-label">TDEE (Tiêu thụ)</span>
-                <span id="tdeeValue" class="stat-value">0</span>
-                <span class="stat-unit">kcal/ngày</span>
-            </div>
-        </div>
-
-        <div class="stat-item highlight-item">
-            <div class="stat-icon">🎯</div>
-            <div class="stat-info">
-                <span class="stat-label">Mục Tiêu Ăn Uống</span>
-                <span id="targetCalories" class="stat-value-large">0</span>
-                <span class="stat-unit">kcal/ngày</span>
-            </div>
-        </div>
-    </div>
-</div>
+  
                   </div>
             </div>
         </div>
@@ -271,6 +267,13 @@
                 </button>
             </div>
         </div>
+    </div>
+</div>
+<div id="toast" class="toast">
+    <div class="toast-icon">✅</div>
+    <div class="toast-body">
+        <h4 class="toast-title">Thành công!</h4>
+        <p class="toast-message">Đã cập nhật chỉ số BMI & TDEE.</p>
     </div>
 </div>
     <script src="js/nav-indicator.js"></script>
