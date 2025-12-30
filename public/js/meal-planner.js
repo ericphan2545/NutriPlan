@@ -143,6 +143,21 @@ const MealPlanner = {
       setTimeout(() => (modal.style.display = "none"), 300);
     }
   },
+  showToast(message) {
+    const toast = document.getElementById("toast");
+    const toastMsg = document.querySelector(".toast-message");
+    
+    if (toast && toastMsg) {
+        if(message) toastMsg.textContent = message;
+        
+        toast.classList.add("show");
+        
+        // Tự động ẩn sau 3 giây
+        setTimeout(() => {
+            toast.classList.remove("show");
+        }, 3000);
+    }
+  },
 
   openWarningModal() {
     const modal = document.getElementById("warningModal");
@@ -276,6 +291,8 @@ const MealPlanner = {
     // Lưu dữ liệu
     this.updateNutritionTargets();
     this.saveData();
+    this.closeSettingsModal();
+    this.showToast("Đã tính toán BMI & Nhu cầu Calo thành công!");
   },
 
   displayBMIResult() {
@@ -400,7 +417,7 @@ const MealPlanner = {
                 <div class="meal-slot-content">
                     <span class="meal-emoji">${mealData.emoji || '🥘'}</span>
                     <div>
-                        <div class="meal-name" style="font-weight:600; font-size: 0.9rem;">${mealData.name}</div>
+                        <div class="meal-name" style="font-weight:600; font-size: 0.7rem;">${mealData.name}</div>
                         <div class="meal-calories" style="font-size: 0.8rem; color: var(--text-muted);">${mealData.calories} kcal</div>
                     </div>
                 </div>

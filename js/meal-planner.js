@@ -143,6 +143,21 @@ const MealPlanner = {
       setTimeout(() => (modal.style.display = "none"), 300);
     }
   },
+  showToast(message) {
+    const toast = document.getElementById("toast");
+    const toastMsg = document.querySelector(".toast-message");
+    
+    if (toast && toastMsg) {
+        if(message) toastMsg.textContent = message;
+        
+        toast.classList.add("show");
+        
+        // Tự động ẩn sau 3 giây
+        setTimeout(() => {
+            toast.classList.remove("show");
+        }, 3000);
+    }
+  },
 
   openWarningModal() {
     const modal = document.getElementById("warningModal");
@@ -276,6 +291,8 @@ const MealPlanner = {
     // Lưu dữ liệu
     this.updateNutritionTargets();
     this.saveData();
+    this.closeSettingsModal();
+    this.showToast("Đã tính toán BMI & Nhu cầu Calo thành công!");
   },
 
   displayBMIResult() {

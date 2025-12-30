@@ -588,6 +588,7 @@ h1, h2, h3 {
 .meal-slots {
     display: flex;
     flex-direction: column;
+    
     gap: 0.5rem;
 }
 
@@ -596,10 +597,12 @@ h1, h2, h3 {
     border-radius: var(--radius-sm);
     padding: 0.625rem;
     border: 2px dashed var(--bg-sage);
-    min-height: 100px;
+    min-height: 140px;
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
+    justify-content: center;
+    align-content: center;
 }
 
 .meal-slot:hover {
@@ -618,6 +621,9 @@ h1, h2, h3 {
     text-transform: uppercase;
     font-weight: 700;
     margin-bottom: 0.25rem;
+    position: absolute;
+    top: 8px;   /* Cách mép trên 8px */
+    left: 10px;
 }
 
 .meal-slot-content {
@@ -1134,7 +1140,7 @@ h1, h2, h3 {
 .stat-value {
     font-size: 1.2rem;
     font-weight: 700;
-    color: var(--text-primary);
+    color: var(--color-black);
 }
 
 .stat-unit {
@@ -1186,4 +1192,230 @@ h1, h2, h3 {
     .bmi-score {
         font-size: 2.5rem;
     }
+}
+/* ======================================================
+   FIX LAYOUT & COMPACT STYLE (FINAL VERSION)
+   ====================================================== */
+
+/* 1. Xử lý lỗi bị menu che khuất */
+.main-container {
+    /* padding-top: 140px !important; Tăng khoảng cách đẩy xuống */
+    max-width: 1400px;
+    margin: 0 auto;
+    padding-bottom: 3rem;
+}
+
+/* 2. Grid Layout: Cột trái cố định 280px, Cột phải tự giãn */
+.planner-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr; /* 280px cho BMI, còn lại cho Lịch */
+    gap: 1.5rem;
+    align-items: start; /* Căn thẳng hàng bên trên */
+    width: 100%;
+}
+
+/* 3. Tinh chỉnh BMI Card (Compact) */
+.planner-layout .bmi-result-card {
+    display: flex !important; /* Bắt buộc dùng Flex */
+    flex-direction: column;
+    padding: 1rem;
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    height: 36.5rem; /* Chiều cao vừa khít nội dung */
+    margin-top: 0 !important;
+}
+
+/* Phần vòng tròn BMI */
+.planner-layout .bmi-overview {
+    border-right: none;
+    border-bottom: 1px solid #eee;
+    padding-right: 0;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    width: 100%;
+    text-align: center;
+}
+
+.planner-layout .bmi-circle {
+    width: 90px;  /* Thu nhỏ vòng tròn */
+    height: 90px;
+    margin: 0 auto;
+}
+
+.planner-layout .bmi-score {
+    font-size: 1.8rem; /* Số nhỏ lại */
+}
+
+.planner-layout .bmi-unit {
+    font-size: 0.7rem;
+}
+
+.planner-layout .bmi-card-title {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Phần chỉ số chi tiết */
+.planner-layout .bmi-details-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.planner-layout .stat-item {
+    padding: 0.5rem 0.8rem;
+    border-radius: 8px;
+    background: #f8f9fa;
+    display: flex;
+    justify-content: space-between; /* Đẩy chữ sang 2 bên */
+    align-items: center;
+}
+
+.planner-layout .stat-label {
+    font-size: 0.8rem;
+}
+
+.planner-layout .stat-value {
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.planner-layout .stat-icon {
+    display: none; /* Ẩn icon lửa/sấm sét cho gọn */
+}
+
+/* 4. Tinh chỉnh Lịch (Compact) */
+.planner-layout .weekly-calendar {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 1rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    margin-bottom: 0 !important;
+}
+
+.planner-layout .calendar-header {
+    margin-bottom: 0.8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.planner-layout .calendar-title {
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.planner-layout .auto-generate-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+}
+
+/* Grid các ngày */
+.planner-layout .days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 7 cột đều nhau */
+    gap: 0.5rem;
+}
+
+.planner-layout .day-column {
+    padding: 0.5rem;
+    min-height: 180px; /* Chiều cao tối thiểu ngắn lại */
+}
+
+.planner-layout .day-header {
+    font-size: 0.8rem;
+    padding-bottom: 0.3rem;
+    margin-bottom: 0.3rem;
+}
+
+.planner-layout {
+    padding: 0.3rem;
+    min-height: 50px;
+    margin-bottom: 0.3rem;
+}
+
+.planner-layout .meal-slot-label {
+    font-size: 0.6rem;
+    margin-bottom: 0;
+}
+
+.planner-layout .add-meal-icon {
+    font-size: 1rem;
+    height: 20px;
+}
+
+/* 5. Responsive Mobile */
+@media (max-width: 1024px) {
+    .planner-layout {
+        grid-template-columns: 1fr; /* Quay về 1 cột */
+    }
+    
+    .planner-layout .days-grid {
+        grid-template-columns: repeat(3, 1fr); /* Lịch chia 3 cột */
+    }
+}
+@media (max-width: 500px) {
+    .meal-slot {
+        grid-template-columns: 1fr;
+        max-width: 90px;
+    }
+    .meal-name {
+        max-width: 40px;
+        font-size: small;
+    }
+}
+/* ===================================
+   NÚT CẬP NHẬT BMI (BÊN TRONG CARD)
+   =================================== */
+
+.btn-recalc {
+    margin-top: 1rem; /* Cách dòng trạng thái BMI một chút */
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    border: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    
+    /* Màu sắc: Nền xanh nhạt, chữ xanh đậm */
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: var(--color-white);
+    border: 1px solid transparent;
+}
+
+.btn-recalc:hover {
+    background-color: var(--primary-green);
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(46, 125, 50, 0.2);
+}
+
+.btn-recalc:active {
+    transform: translateY(0);
+}
+
+/* Dark Mode Support cho nút này */
+[data-theme="dark"] .btn-recalc {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--mint-green);
+}
+
+[data-theme="dark"] .btn-recalc:hover {
+    background-color: var(--mint-green);
+    color: #1a1a2e; /* Chữ tối màu khi nền sáng */
+}
+
+/* Tinh chỉnh Responsive khi ở chế độ Compact (Planner Layout) */
+.planner-layout .btn-recalc {
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
 }
